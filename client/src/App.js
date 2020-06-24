@@ -1,13 +1,15 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import './App.css';
-import AppBar from './components/NavBar'
+import NavBar from './components/NavBar'
 import ChannelCards from './container/ChannelCards';
 function App() {
   return (
     <div className="App">
-      <AppBar />
-      <ChannelCards />
+      <Grid container direction="column">
+        <NavBar />
+        <ChannelCards />
+      </Grid>
     </div>
   );
 }

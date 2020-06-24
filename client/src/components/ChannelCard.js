@@ -17,10 +17,15 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     content: {
-        alignItems: 'center'
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center'
     },
-    avatar: {
-        margin: 'auto'
+    actions: {
+        display: 'flex',
+        justifyContent: 'center',
     },
     large: {
         width: theme.spacing(10),
@@ -33,9 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 const ChannelCard = () => {
     const classes = useStyles();
-
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} elevation={0}>
             <CardContent className={classes.content}>
                 <Avatar className={classes.avatar} alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.large} />
                 <Typography variant="h5" component="h2">
@@ -46,7 +50,7 @@ const ChannelCard = () => {
         </Typography>
 
             </CardContent>
-            <CardActions>
+            <CardActions className={classes.actions}>
                 <Button variant="contained" size="small">Subscribed</Button>
             </CardActions>
         </Card >
