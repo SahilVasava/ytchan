@@ -1,31 +1,23 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import axios from 'axios';
+import { AuthContext } from '../contexts/authContext';
 
 const GoogleBtn = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [accessToken, setAccessToken] = useState(null);
 
-    const login = (response) => {
-        console.log(response);
-        if (response.accessToken) {
-            setIsLoggedIn(true);
-            setAccessToken(response.access_token);
-            axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet,contentDetails&mine=true`, {
-                headers: { 'Authorization': 'Bearer ' + accessToken }
-            })
-                .then(response => {
-                    console.log(response);
-                }).catch(err => {
-                    console.log(err);
-                })
+
+    const { isLoggedIn, addToken, toggleIsLoggedIn } = useContext(AuthContext);
+    const login = (loginRes) => {
+        console.log(loginRes);
+        if (loginRes.accessToken) {
+            toggleIsLoggedIn(true);
+            addToken(loginRes.accessToken);
         }
     }
 
     const logout = (response) => {
-        setIsLoggedIn(false);
-        setAccessToken(null);
+        toggleIsLoggedIn(false);
+        addToken('');
     }
 
     const handleLoginFailure = (response) => {

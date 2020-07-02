@@ -1,12 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import { palette, spacing, typography } from '@material-ui/system';
+import { Grid, Card, CardActions, CardContent, Button, Typography, Avatar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
     },
-    large: {
+    avatar: {
         width: theme.spacing(10),
         height: theme.spacing(10),
     },
@@ -36,24 +30,27 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const ChannelCard = () => {
+const ChannelCard = (props) => {
     const classes = useStyles();
+    console.log('subs', props.sub);
     return (
-        <Card className={classes.root} elevation={0}>
-            <CardContent className={classes.content}>
-                <Avatar className={classes.avatar} alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.large} />
-                <Typography variant="h5" component="h2">
-                    Title
-        </Typography>
-                <Typography color="textSecondary">
-                    11M Subscribers
+        <Grid item xs={6} sm={3}>
+            <Card className={classes.root} elevation={0}>
+                <CardContent className={classes.content}>
+                    <Avatar className={classes.avatar} alt={props.sub.title} src={props.sub.thumbnails.default.url} />
+                    <Typography variant="subtitle1">
+                        {props.sub.title}
+                    </Typography>
+                    <Typography color="textSecondary">
+                        11M Subscribers
         </Typography>
 
-            </CardContent>
-            <CardActions className={classes.actions}>
-                <Button variant="contained" size="small">Subscribed</Button>
-            </CardActions>
-        </Card >
+                </CardContent>
+                <CardActions className={classes.actions}>
+                    <Button variant="contained" size="small">Subscribed</Button>
+                </CardActions>
+            </Card >
+        </Grid>
     );
 }
 
