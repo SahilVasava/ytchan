@@ -4,7 +4,7 @@ import { Grid, Card, CardActions, CardContent, Button, Typography, Avatar } from
 
 const useStyles = makeStyles((theme) => ({
     root: {
-
+        height: "100%",
         justifyContent: 'center',
         '& > *': {
             margin: theme.spacing(1),
@@ -34,7 +34,7 @@ const ChannelCard = (props) => {
     const classes = useStyles();
     console.log('subs', props.sub);
     return (
-        <Grid item xs={6} sm={3}>
+        <Grid item xs={6} sm={3} md={2}>
             <Card className={classes.root} elevation={0}>
                 <CardContent className={classes.content}>
                     <Avatar className={classes.avatar} alt={props.sub.title} src={props.sub.thumbnails.default.url} />
@@ -47,7 +47,7 @@ const ChannelCard = (props) => {
 
                 </CardContent>
                 <CardActions className={classes.actions}>
-                    <Button variant="contained" size="small">Subscribed</Button>
+                    <Button variant="contained" size="small" color="secondary">Subscribed</Button>
                 </CardActions>
             </Card >
         </Grid>

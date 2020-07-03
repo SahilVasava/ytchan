@@ -5,24 +5,31 @@ import './App.css';
 import NavBar from './components/NavBar'
 import ChannelCards from './container/ChannelCards';
 import AuthContextProvider from './contexts/authContext';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 
-function App() {
+const App = () => {
   const theme = createMuiTheme({
     palette: {
       type: 'dark',
-      primary: {
+      /* primary: {
         // main: '#3f50b5',
-        main: '#000',
+        dark: '#000',
+        light: '#fff'
       },
       secondary: {
         // main: '#f44336',
         main: '#ba000d',
-      },
+      }, */
+      /* background: {
+        paper: '#303030'
+      } */
     },
   });
+  console.log(theme);
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <div className="App">
         <AuthContextProvider>
           <Grid container direction="column">

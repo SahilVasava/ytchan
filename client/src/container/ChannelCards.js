@@ -26,7 +26,7 @@ const ChannelCards = () => {
     }, [isLoggedIn, accessToken]);
     return (
         <div style={{ marginTop: 20, padding: 30 }}>
-            <Grid item container>
+            <Grid container spacing={1} >
                 {/* <Grid item xs={false} sm={2} /> */}
                 {subscriptions.map(sub => {
                     return (
@@ -36,7 +36,48 @@ const ChannelCards = () => {
 
                     )
                 })}
-
+                <ChannelCard sub={{
+                    title: 'Lorem ipsum dolor sit amet.', thumbnails: {
+                        default: {
+                            url: 'https://via.placeholder.com/150'
+                        }
+                    }
+                }} />
+                <ChannelCard sub={{
+                    title: 'tt', thumbnails: {
+                        default: {
+                            url: 'https://via.placeholder.com/150'
+                        }
+                    }
+                }} />
+                <ChannelCard sub={{
+                    title: 'tt', thumbnails: {
+                        default: {
+                            url: 'https://via.placeholder.com/150'
+                        }
+                    }
+                }} />
+                <ChannelCard sub={{
+                    title: 'tt', thumbnails: {
+                        default: {
+                            url: 'https://via.placeholder.com/150'
+                        }
+                    }
+                }} />
+                <ChannelCard sub={{
+                    title: 'tt', thumbnails: {
+                        default: {
+                            url: 'https://via.placeholder.com/150'
+                        }
+                    }
+                }} />
+                <ChannelCard sub={{
+                    title: 'tt', thumbnails: {
+                        default: {
+                            url: 'https://via.placeholder.com/150'
+                        }
+                    }
+                }} />
                 {/* <Grid item xs={false} sm={2} /> */}
             </Grid>
         </div>
