@@ -8,7 +8,6 @@ const GoogleBtn = () => {
 
     const { isLoggedIn, addToken, toggleIsLoggedIn } = useContext(AuthContext);
     const login = (loginRes) => {
-        console.log(loginRes);
         if (loginRes.accessToken) {
             toggleIsLoggedIn(true);
             addToken(loginRes.accessToken);
