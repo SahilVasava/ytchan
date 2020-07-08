@@ -10,7 +10,8 @@ import SearchBar from '../components/SearchBar';
 const ChannelCards = () => {
     const [subscriptions, setSubscriptions] = useState([]);
     const { isLoggedIn, accessToken } = useContext(AuthContext);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState([]);
+    const [tags, setTags] = useState([]);
     useEffect(() => {
         if (isLoggedIn && accessToken) {
 
@@ -51,12 +52,31 @@ const ChannelCards = () => {
                     let filledSubs = subscriptions.map(sub => {
                         //console.log(channelItems.find(item => item.id === sub.resourceId.channelId), sub.resourceId.channelId)
                         let channelDetails = channelItems.find(item => item.id === sub.resourceId.channelId);
+                        let extractedTags = [];
+                        if (channelDetails.brandingSettings.channel.keywords) {
+                            extractedTags = [...new Set(channelDetails.brandingSettings.channel.keywords.replace(/"/g, '').split(' '))];
+                            console.log(extractedTags)
+                            //extractedTags = extractedTags.substr(1, extractedTags.length - 1).replace('""', '').split(' ');
+                            //extractedTags.map(tg => { console.log(tg.replace('\"', '')); return tg.replace('""', '') });
+
+                            setTags([...tags, ...extractedTags])
+                        }
+                        console.log(channelDetails.brandingSettings.channel.title.split(' '))
+                        //extractedTags = [...new Set(...extractedTags, ...channelDetails.brandingSettings.channel.title.split(' '))];
+                        let titleTags = channelDetails.brandingSettings.channel.title.split(' ');
+                        console.log("before", extractedTags);
+                        //extractedTags = [...extractedTags, ...titleTags];
+                        console.log("after", extractedTags);
+                        //extractedTags = Array.from(extractedTags);
+                        console.log('before tags', tags);
+                        console.log('after tags', tags);
                         return {
                             ...sub,
                             statistics: channelDetails.statistics,
-                            keywords: channelDetails.brandingSettings.channel.keywords
+                            keywords: extractedTags
                         }
                     });
+
                     console.log('filled subds', filledSubs);
 
                     setSubscriptions(filledSubs);
@@ -72,9 +92,7 @@ const ChannelCards = () => {
             fetchChannelDetails(ids);
         }
     }, [isLoggedIn, accessToken, subscriptions.length]);
-    const setInputValue = (value) => {
-        setSearch(value)
-    }
+
     return (
         <div style={{ marginTop: 20, padding: 30 }}>
             <Grid container spacing={1} >
@@ -88,9 +106,9 @@ const ChannelCards = () => {
                             maxWidth: 800
                         }}
                     /> */}
-                    <SearchBar search={search} setValue={(value) => setInputValue(value)} />
+                    <SearchBar tags={tags} setValues={(value) => setSearch(value)} />
                 </Grid>
-                {subscriptions.map(sub => {
+                {subscriptions.filter(sb => search.length ? search.some(val => sb.keywords ? sb.keywords.includes(val) : false) : true).map(sub => {
                     return (
 
                         <ChannelCard key={sub.resourceId.channelId} sub={sub} />
