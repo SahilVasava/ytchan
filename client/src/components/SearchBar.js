@@ -67,7 +67,7 @@ const SearchBar = (props) => {
                 className={classes.input}
                 options={props.tags}
                 getOptionLabel={(option) => option}
-                style={{ width: 300 }}
+                filterSelectedOptions
                 onChange={(event, values) => props.setValues(values)}
                 renderInput={(params) =>
                     <TextField

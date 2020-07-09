@@ -49,36 +49,40 @@ const ChannelCards = () => {
                     })
                     console.log(channelResponse);
                     let channelItems = channelResponse.data.items;
+                    let extractedTags = [];
                     let filledSubs = subscriptions.map(sub => {
                         //console.log(channelItems.find(item => item.id === sub.resourceId.channelId), sub.resourceId.channelId)
                         let channelDetails = channelItems.find(item => item.id === sub.resourceId.channelId);
-                        let extractedTags = [];
+                        let indTags = []
+                        let titleTags = channelDetails.brandingSettings.channel.title.split(' ').map(v => v.toLowerCase());
+                        indTags = [...titleTags];
                         if (channelDetails.brandingSettings.channel.keywords) {
-                            extractedTags = [...new Set(channelDetails.brandingSettings.channel.keywords.replace(/"/g, '').split(' '))];
+                            indTags = [...indTags, ...channelDetails.brandingSettings.channel.keywords.replace(/"/g, '').split(' ').map(k => k.toLowerCase())];
+                            indTags = [...new Set(indTags)];
+                            extractedTags = [...extractedTags, ...indTags];
                             console.log(extractedTags)
                             //extractedTags = extractedTags.substr(1, extractedTags.length - 1).replace('""', '').split(' ');
                             //extractedTags.map(tg => { console.log(tg.replace('\"', '')); return tg.replace('""', '') });
 
-                            setTags([...tags, ...extractedTags])
+
                         }
-                        console.log(channelDetails.brandingSettings.channel.title.split(' '))
+                        // console.log(channelDetails.brandingSettings.channel.title.split(' '))
                         //extractedTags = [...new Set(...extractedTags, ...channelDetails.brandingSettings.channel.title.split(' '))];
-                        let titleTags = channelDetails.brandingSettings.channel.title.split(' ');
-                        console.log("before", extractedTags);
+                        // console.log("before", extractedTags);
                         //extractedTags = [...extractedTags, ...titleTags];
                         console.log("after", extractedTags);
                         //extractedTags = Array.from(extractedTags);
                         console.log('before tags', tags);
-                        console.log('after tags', tags);
+                        // console.log('after tags', tags);
                         return {
                             ...sub,
                             statistics: channelDetails.statistics,
-                            keywords: extractedTags
+                            keywords: indTags
                         }
                     });
 
                     console.log('filled subds', filledSubs);
-
+                    setTags([...tags, ...extractedTags])
                     setSubscriptions(filledSubs);
                 } catch (error) {
                     console.log(error);
@@ -116,7 +120,7 @@ const ChannelCards = () => {
 
                     )
                 })}
-                <ChannelCard sub={{
+                {/* <ChannelCard sub={{
                     title: 'Lorem ipsum dolor sit amet.', thumbnails: {
                         default: {
                             url: 'https://via.placeholder.com/150'
@@ -157,7 +161,7 @@ const ChannelCards = () => {
                             url: 'https://via.placeholder.com/150'
                         }
                     }
-                }} />
+                }} /> */}
                 {/* <Grid item xs={false} sm={2} /> */}
             </Grid>
         </div>
