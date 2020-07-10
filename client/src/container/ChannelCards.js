@@ -18,7 +18,7 @@ const ChannelCards = () => {
             const fetchSubscriptions = async () => {
                 try {
 
-                    const subscriptionsRes = await axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true`, {
+                    const subscriptionsRes = await axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=20`, {
                         headers: { 'Authorization': 'Bearer ' + accessToken },
 
                     })
@@ -35,6 +35,10 @@ const ChannelCards = () => {
 
             fetchSubscriptions();
 
+        } else {
+            setTags([]);
+            setSearch([]);
+            setSubscriptions([]);
         }
     }, [isLoggedIn, accessToken]);
 
@@ -47,11 +51,11 @@ const ChannelCards = () => {
                         headers: { 'Authorization': 'Bearer ' + accessToken },
 
                     })
-                    console.log(channelResponse);
+
                     let channelItems = channelResponse.data.items;
                     let extractedTags = [];
                     let filledSubs = subscriptions.map(sub => {
-                        //console.log(channelItems.find(item => item.id === sub.resourceId.channelId), sub.resourceId.channelId)
+
                         let channelDetails = channelItems.find(item => item.id === sub.resourceId.channelId);
                         let indTags = []
                         let titleTags = channelDetails.brandingSettings.channel.title.split(' ').map(v => v.toLowerCase());
@@ -60,20 +64,8 @@ const ChannelCards = () => {
                             indTags = [...indTags, ...channelDetails.brandingSettings.channel.keywords.replace(/"/g, '').split(' ').map(k => k.toLowerCase())];
                             indTags = [...new Set(indTags)];
                             extractedTags = [...extractedTags, ...indTags];
-                            console.log(extractedTags)
-                            //extractedTags = extractedTags.substr(1, extractedTags.length - 1).replace('""', '').split(' ');
-                            //extractedTags.map(tg => { console.log(tg.replace('\"', '')); return tg.replace('""', '') });
-
-
                         }
-                        // console.log(channelDetails.brandingSettings.channel.title.split(' '))
-                        //extractedTags = [...new Set(...extractedTags, ...channelDetails.brandingSettings.channel.title.split(' '))];
-                        // console.log("before", extractedTags);
-                        //extractedTags = [...extractedTags, ...titleTags];
-                        console.log("after", extractedTags);
-                        //extractedTags = Array.from(extractedTags);
-                        console.log('before tags', tags);
-                        // console.log('after tags', tags);
+
                         return {
                             ...sub,
                             statistics: channelDetails.statistics,
@@ -81,7 +73,6 @@ const ChannelCards = () => {
                         }
                     });
 
-                    console.log('filled subds', filledSubs);
                     setTags([...tags, ...extractedTags])
                     setSubscriptions(filledSubs);
                 } catch (error) {
@@ -90,9 +81,8 @@ const ChannelCards = () => {
 
             };
 
-            //console.log('subsss', subscriptions);
             let ids = subscriptions.map(sub => sub.resourceId.channelId).join(',');
-            //console.log(ids);
+
             fetchChannelDetails(ids);
         }
     }, [isLoggedIn, accessToken, subscriptions.length]);

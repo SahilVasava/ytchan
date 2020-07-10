@@ -1,22 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { AuthContext } from '../contexts/authContext';
 
 const GoogleBtn = () => {
 
 
+    const { accessToken, isLoggedIn, setAccessToken, setIsLoggedIn } = useContext(AuthContext);
 
-    const { isLoggedIn, addToken, toggleIsLoggedIn } = useContext(AuthContext);
+    useEffect(() => {
+        let access_token = JSON.parse(localStorage.getItem('access_token'));
+        if (access_token && new Date(access_token.expires_at) >= new Date()) {
+            setIsLoggedIn(true);
+            console.log(access_token);
+            setAccessToken(access_token.token);
+        } else {
+            logout();
+        }
+    }, [])
     const login = (loginRes) => {
         if (loginRes.accessToken) {
-            toggleIsLoggedIn(true);
-            addToken(loginRes.accessToken);
+            localStorage.setItem('access_token', JSON.stringify({ 'token': loginRes.accessToken, 'expires_at': loginRes.tokenObj.expires_at }));
+            //localStorage.setItem('access_token', loginRes.accessToken);
+            setIsLoggedIn(true);
+            setAccessToken(loginRes.accessToken);
         }
     }
 
     const logout = (response) => {
-        toggleIsLoggedIn(false);
-        addToken('');
+        localStorage.removeItem('access_token');
+        setIsLoggedIn(false);
+        setAccessToken('');
     }
 
     const handleLoginFailure = (response) => {

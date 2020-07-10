@@ -1,11 +1,8 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField, Chip } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
